@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -11,11 +11,11 @@ import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "hardhat/console.sol";
 
-contract NFTEncapsule721 is
+contract EncapsuleNFT721 is
     Context,
     ERC721,
     ERC721Burnable,
-    ERC721URIStorage,
+    // ERC721URIStorage,
     AccessControl
 {
     using Counters for Counters.Counter;
@@ -53,17 +53,11 @@ contract NFTEncapsule721 is
 
     event erc20Swapped(uint256 tokenId1, uint256 tokenId2);
 
-    constructor(
-        string memory name,
-        string memory symbol,
-        string memory _baseTokenURI,
-        address _operator
-    ) ERC721(name, symbol) {
-        baseTokenURI = _baseTokenURI;
+    constructor() ERC721("EncapsuleNFT721", "EncapsuleNFT721") {
         owner = _msgSender();
-        operator = _operator;
+        operator = _msgSender();
         _setupRole("ADMIN_ROLE", msg.sender);
-        _setupRole("OPERATOR_ROLE", _operator);
+        _setupRole("OPERATOR_ROLE", operator);
         _tokenIdTracker.increment();
     }
 
@@ -95,13 +89,12 @@ contract NFTEncapsule721 is
         return _erc20Tokenlocked[_tokenId];
     }   
 
-    function setBaseURI(string memory _baseTokenURI) external onlyRole("ADMIN_ROLE") {
-        baseTokenURI = _baseTokenURI;
-    }
+    // function setBaseURI(string memory _baseTokenURI) external onlyRole("ADMIN_ROLE") {
+    //     baseTokenURI = _baseTokenURI;
+    // }
 
     function mint(
         address mintTo,
-        string memory _tokenURI,
         address[] calldata _erc20TokenAddresses,
         uint256[] calldata _erc20TokenAmounts
     ) external virtual onlyRole("ADMIN_ROLE") returns (uint256 _tokenId) {
@@ -109,7 +102,6 @@ contract NFTEncapsule721 is
         require(_erc20TokenAddresses.length == _erc20TokenAmounts.length, "Mismatch in arguments length");
         _tokenId = _tokenIdTracker.current();
         _mint(mintTo, _tokenId);
-        _setTokenURI(_tokenId, _tokenURI);
 
         for(uint i = 0 ; i<_erc20TokenAddresses.length; i++){
             require( IERC20(_erc20TokenAddresses[i]).transferFrom(_msgSender(), address(this), _erc20TokenAmounts[i]), "failure while transferring ERC20 Tokens");
@@ -222,7 +214,7 @@ contract NFTEncapsule721 is
 
     function _burn(uint256 tokenId)
         internal
-        override(ERC721, ERC721URIStorage)
+        override(ERC721)
     {
         super._burn(tokenId);
     }
@@ -230,7 +222,7 @@ contract NFTEncapsule721 is
     function tokenURI(uint256 tokenId)
         public
         view
-        override(ERC721, ERC721URIStorage)
+        override(ERC721)
         returns (string memory)
     {
         return super.tokenURI(tokenId);
