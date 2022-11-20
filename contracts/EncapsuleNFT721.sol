@@ -264,7 +264,7 @@ contract EncapsuleNFT721 is
         svg =  string(abi.encodePacked(
             '<svg xmlns="http://www.w3.org/2000/svg" style="background:#ffff" width="350" height="',height.toString(),'">", ',
             '<rect id="header" x="0" y="0" width="350" height="58" opacity="85%" fill="#1a1a19"/>',
-            '<text id="TokenId" x="100" y="25" stroke="#ffffff" stroke-width="0.25" fill="#f5c240" style="font: 20px Copperplate;"> Portfolio #',token,'</text>',
+            '<text id="TokenId" x="110" y="25" stroke="#ffffff" stroke-width="0.25" fill="#f5c240" style="font: 20px Copperplate;"> Wallet #',token,'</text>',
             '<text id="Owner" x="4" y="47" fill="#f8f7f4" style="font-family:Monospace;font-size:13.5">',
             Strings.toHexString(uint160(ownerOf(tokenId)), 20),'</text>',
             '<rect id="bg" x="0" y="60" width="100%" height="100%" opacity="85%" fill="#F3BA2F">',
