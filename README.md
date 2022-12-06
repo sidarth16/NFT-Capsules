@@ -1,5 +1,8 @@
-# Sample Hardhat Project
-
+# NFT Encapsulation
+- Implementation of ERC998 kind of inspired architecture, wherein NFTs are encapsulated with additional ERC20 Tokens.<br/>
+- Here, user owns the NFT, wherein the NFT owns a bunch of ERC20 tokens.
+- Transfer of NFT inherently transfers ownership of encapsulated tokens as well. - Thus making gas efficient multi-token ownership transfers within platform.
+---
 This project demonstrates Encapsultion of NFT along with multiple ERC20s. <br/>
 - [ NFT + ERC20 ] encapsultion
 
